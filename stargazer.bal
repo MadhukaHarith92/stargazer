@@ -12,7 +12,7 @@ public function getGithubUserIds(string repository) returns json[] {
     string repositorySubName = getRepositorySubName(repository);
 
     boolean allStarredUserIdsSaved = false;
-    int pageNumber = 1;
+    int pageNumber = 0;
 
     while (!allStarredUserIdsSaved) {
         int recordCountOfPage = 0;
@@ -24,10 +24,10 @@ public function getGithubUserIds(string repository) returns json[] {
             if jsonResponse is json {
                 if jsonResponse is json[] {
                     recordCountOfPage = jsonResponse.length();
-                    foreach var i in 1 ..< recordCountOfPage {
-                        var element = jsonResponse[i - 1];
+                    foreach var i in 0 ..< recordCountOfPage {
+                        var element = jsonResponse[i];
                         if element is map<json> {
-                            starredUserIds[(pageNumber - 1) * 100 + i - 1] = element["login"];
+                            starredUserIds[pageNumber * 100 + i] = element["login"];
                         }
                     }
                 }
